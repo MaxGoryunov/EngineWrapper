@@ -31,14 +31,21 @@ public:
 	auto execute(Arguments const& args) {
 		int size = this->arguments.size();
 		if (args.size() != this->arguments.size()) {
-			throw std::invalid_argument("Incorrect number of arguments provided");
+			throw std::invalid_argument(
+				std::string("Incorrect number of arguments provided, expected ") +
+				std::to_string(size) + std::string(", received ") + 
+				std::to_string(args.size())
+			);
 		}
 		auto stored = this->arguments.begin();
 		std::vector<int> values(size);
 		for (int i = 0; i < size; ++i) {
 			auto found = args.find(stored->first);
 			if (found == args.end()) {
-				throw std::invalid_argument("Some argument was not found in provided parameters");
+				throw std::invalid_argument(
+					std::string("Argument ") + stored->first +
+					std::string("was not found in provided parameters")
+				);
 			}
 			values[std::distance(this->arguments.begin(), stored)] = found->second;
 			//values.push_back(found->second); // TODO check if error is here

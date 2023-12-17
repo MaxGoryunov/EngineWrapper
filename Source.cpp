@@ -5,8 +5,8 @@
 
 using std::cout;
 using std::endl;
+using std::cerr;
 using std::unordered_map;
-using std::variant;
 using std::string;
 
 int main() {
@@ -15,6 +15,37 @@ int main() {
 	Engine engine;
 
 	engine.register_command(&wrapper, "command1");
+	cout << "Expecting 2: ";
+	cout << engine.execute("command1", { {"arg1", 3}, {"arg2", 2}, {"arg3", 4} }) << endl;
+
+	cout << "Expecting 10: ";
 	cout << engine.execute("command1", { {"arg1", 3}, {"arg3", 2}, {"arg2", 4} }) << endl;
+
+	cout << "Expecting 5: ";
+	cout << engine.execute("command1", { {"arg3", 3}, {"arg2", 2}, {"arg1", 4} }) << endl;
+
+	cout << "Expecting exception: ";
+	try {
+		engine.execute("command1", { {"arg1", 2}, {"arg3", 3} });
+	}
+	catch (std::runtime_error& e) {
+		cerr << e.what() << endl;
+	}
+
+	cout << "Expecting exception: ";
+	try {
+		engine.execute("command1", { {"arg1", 2}, {"arg2", 3}, {"arg4", 10} });
+	}
+	catch (std::runtime_error& e) {
+		cerr << e.what() << endl;
+	}
+
+	cout << "Expecting exception: ";
+	try {
+		engine.execute("command2", { {"arg1", 2}, {"arg2", 3}, {"arg3", 10} });
+	}
+	catch (std::runtime_error& e) {
+		cerr << e.what() << endl;
+	}
 	return 0;
 }
