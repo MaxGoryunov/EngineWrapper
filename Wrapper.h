@@ -44,11 +44,10 @@ public:
 			if (found == args.end()) {
 				throw std::invalid_argument(
 					std::string("Argument ") + stored->first +
-					std::string("was not found in provided parameters")
+					std::string(" was not found in provided parameters")
 				);
 			}
 			values[std::distance(this->arguments.begin(), stored)] = found->second;
-			//values.push_back(found->second); // TODO check if error is here
 			stored++;
 		}
 		return this->call(values, std::make_index_sequence<sizeof...(ArgTypes)>{});

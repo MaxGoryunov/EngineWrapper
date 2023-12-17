@@ -47,5 +47,11 @@ int main() {
 	catch (std::runtime_error& e) {
 		cerr << e.what() << endl;
 	}
+
+	Wrapper wrapper2(&ex, &Subject::f4, { {"argument1", 0}, {"arg2", 0} });
+	engine.register_command(&wrapper2, "comm2");
+
+	cout << "Expecting 6: ";
+	cout << engine.execute("comm2", { {"arg2", 10}, {"argument1", 4} }) << endl;
 	return 0;
 }
