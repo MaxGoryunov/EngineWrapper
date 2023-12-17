@@ -9,22 +9,22 @@
 #include <stdexcept>
 #include <vector>
 
-template<typename T, typename Fret, typename ...ArgTypes>
+template<typename T, typename ...ArgTypes>
 class Wrapper {
 private:
 	using Arguments = std::unordered_map<std::string, int>;
 	T* subject;
-	Fret(T::* method)(ArgTypes...);
+	int(T::* method)(ArgTypes...);
 	Arguments arguments;
 
 	template<std::size_t ...I>
-	Fret call(std::vector<int>& values, std::index_sequence<I...>) {
+	int call(std::vector<int> values, std::index_sequence<I...>) {
 		return (this->subject->*(this->method))(std::forward<ArgTypes>(values[I])...);
 	}
 public:
 	Wrapper(
 		T* subject,
-		Fret(T::* method)(ArgTypes...),
+		int(T::* method)(ArgTypes...),
 		Arguments const& arguments
 	) : subject(subject), method(method), arguments(arguments) {}
 

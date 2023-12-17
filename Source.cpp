@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Wrapper.h"
-#include "MathExample.h"
+#include "Subject.h"
+#include "Engine.h"
 
 using std::cout;
 using std::endl;
@@ -9,8 +10,11 @@ using std::variant;
 using std::string;
 
 int main() {
-	MathExample ex;
-	Wrapper wrapper(&ex, &MathExample::f3, {{"arg1", 0}, {"arg2", 0}, {"arg3",0 } });
-	cout << wrapper.execute({ {"arg1", 3}, {"arg3", 2}, {"arg2", 4} }) << endl;
+	Subject ex;
+	Wrapper wrapper(&ex, &Subject::f3, {{"arg1", 0}, {"arg2", 0}, {"arg3", 0}});
+	Engine engine;
+
+	engine.register_command(&wrapper, "command1");
+	cout << engine.execute("command1", { {"arg1", 3}, {"arg3", 2}, {"arg2", 4} }) << endl;
 	return 0;
 }
